@@ -13,35 +13,7 @@ The pip and Conda packages ship with CUDA and cuDNN already built in, so after y
 
 ### pip:
 
-The neural-style-pt PyPI page can be found here: https://pypi.org/project/neural-style/
-
-If you wish to install neural-style-pt as a pip package, then use the following command:
-
-```
-# in a terminal, run the command
-pip install neural-style
-```
-
-Or:
-
-
-```
-# in a terminal, run the command
-pip3 install neural-style
-```
-
-Next download the models with:
-
-
-```
-neural-style -download_models
-```
-
-By default the models are downloaded to your home directory, but you can specify a download location with:
-
-```
-neural-style -download_models <download_path>
-```
+This fork is currently not available on PyPI
 
 #### Github and pip:
 
@@ -219,7 +191,7 @@ First we clone `neural-style-pt` from GitHub:
 
 ```
 cd ~/
-git clone https://github.com/ProGamerGov/neural-style-pt.git
+git clone https://github.com/Lucas-Steinmann/neural-style-pt.git
 cd neural-style-pt
 ```
 
@@ -232,19 +204,19 @@ python models/download_models.py
 You should now be able to run `neural-style-pt` in CPU mode like this:
 
 ```
-python neural_style.py -gpu c -print_iter 1
+python neural_style.py gpu=c print_iter=1
 ```
 
 If you installed PyTorch with support for CUDA, then should now be able to run `neural-style-pt` in GPU mode like this:
 
 ```
-python neural_style.py -gpu 0 -print_iter 1
+python neural_style.py gpu=0 -print_iter=1
 ```
 
 If you installed PyTorch with support for cuDNN, then you should now be able to run `neural-style-pt` with the `cudnn` backend like this:
 
 ```
-python neural_style.py -gpu 0 -backend cudnn -print_iter 1
+python neural_style.py gpu=0 backend=cudnn print_iter=1
 ```
 
 If everything is working properly you should see output like this:

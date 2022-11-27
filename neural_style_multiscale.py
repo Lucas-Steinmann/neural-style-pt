@@ -8,7 +8,7 @@ from hydra.utils import get_original_cwd
 from omegaconf import DictConfig
 
 from multiscale_strategies import MULTISCALE_STRATEGIES, MultiScaleParamStrategy
-from neural_style import neural_style
+from neural_style import neural_style, CONTENT_IMAGE_NAME, STYLE_IMAGE_NAME, copy_images_to_working_dir
 
 
 def gen_step_param_strategies(config: DictConfig) -> Dict[str, MultiScaleParamStrategy]:
@@ -22,19 +22,11 @@ def output_image_name(step: int) -> str:
     return f'step_{step}.png'
 
 
-CONTENT_IMAGE_NAME = "content.png"
-STYLE_IMAGE_NAME = "style.png"
-
-
 @hydra.main(version_base=None, config_path='.', config_name='multiscale_config.yaml')
 def multiscale_transfer(cfg: DictConfig):
     print(f"Working directory: {os.getcwd()}")
     steps = cfg.multiscale_steps
-    # copy input images to working directory
-    orig_content_image = osp.join(get_original_cwd(), cfg.content_image)
-    orig_style_image = osp.join(get_original_cwd(), cfg.style_image)
-    shutil.copy2(orig_content_image, CONTENT_IMAGE_NAME)
-    shutil.copy2(orig_style_image, STYLE_IMAGE_NAME)
+    copy_images_to_working_dir(cfg)
 
     # generate strategies from config
     param_strategies = gen_step_param_strategies(cfg.neural_style)

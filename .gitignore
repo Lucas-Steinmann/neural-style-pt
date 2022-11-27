@@ -7,3 +7,4 @@ out*.png
 models/
 !models/download_models.py
 __pycache__/
+data/inputs/

@@ -1,5 +1,7 @@
 import os
+import os.path as osp
 import copy
+import shutil
 
 import hydra
 import torch
@@ -8,12 +10,17 @@ import torch.optim as optim
 import torchvision.transforms as transforms
 
 from PIL import Image
+from hydra.utils import get_original_cwd
+from omegaconf import DictConfig
+
 from CaffeLoader import loadCaffemodel, ModelParallel
 
 Image.MAX_IMAGE_PIXELS = 1000000000 # Support gigapixel images
+CONTENT_IMAGE_NAME = "content.png"
+STYLE_IMAGE_NAME = "style.png"
+INIT_IMAGE_NAME = "init.png"
 
 
-@hydra.main(version_base=None, config_path=".", config_name="config")
 def neural_style(params):
     dtype, multidevice, backward_device = setup_gpu(params.backend, params.cudnn_autotune, params.gpu)
 
@@ -446,5 +453,27 @@ class TVLoss(nn.Module):
         return input
 
 
+def copy_images_to_working_dir(cfg: DictConfig):
+    """ Copies the input image to the hydra working directory. """
+    orig_content_image = osp.join(get_original_cwd(), cfg.content_image)
+    orig_style_image = osp.join(get_original_cwd(), cfg.style_image)
+    shutil.copy2(orig_content_image, CONTENT_IMAGE_NAME)
+    shutil.copy2(orig_style_image, STYLE_IMAGE_NAME)
+    if cfg.init_image is not None:
+        orig_init_image = osp.join(get_original_cwd(), cfg.init_image)
+        shutil.copy2(orig_init_image, INIT_IMAGE_NAME)
+
+
+@hydra.main(version_base=None, config_path=".", config_name="config")
+def neural_style_hydra(cfg: DictConfig):
+    copy_images_to_working_dir(cfg)
+    cfg.content_image = CONTENT_IMAGE_NAME
+    cfg.style_image = STYLE_IMAGE_NAME
+    if cfg.init_image is not None:
+        cfg.init_image = INIT_IMAGE_NAME
+    cfg.model_file = osp.join(get_original_cwd(), cfg.model_file)
+    neural_style(cfg)
+
+
 if __name__ == "__main__":
-    neural_style()
+    neural_style_hydra()

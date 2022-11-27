@@ -193,6 +193,7 @@ First we clone `neural-style-pt` from GitHub:
 cd ~/
 git clone https://github.com/Lucas-Steinmann/neural-style-pt.git
 cd neural-style-pt
+pip3 install hydra-core
 ```
 
 Next we need to download the pretrained neural network models:

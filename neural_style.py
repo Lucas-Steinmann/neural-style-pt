@@ -14,7 +14,7 @@ Image.MAX_IMAGE_PIXELS = 1000000000 # Support gigapixel images
 
 
 @hydra.main(version_base=None, config_path=".", config_name="config")
-def main(params):
+def neural_style(params):
     dtype, multidevice, backward_device = setup_gpu(params.backend, params.cudnn_autotune, params.gpu)
 
     cnn, layerList = loadCaffemodel(params.model_file, params.pooling, params.gpu, params.disable_check)
@@ -447,4 +447,4 @@ class TVLoss(nn.Module):
 
 
 if __name__ == "__main__":
-    main()
+    neural_style()

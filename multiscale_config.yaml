@@ -1,0 +1,56 @@
+content_image: "examples/inputs/tubingen.jpg"
+style_image: "examples/inputs/seated-nude.jpg"
+init_image: null
+multiscale_steps: 5
+
+neural_style:
+  # output
+  image_size:
+    type: ListParamStrategy
+    values: [512, 720, 1080, 1200, 1440]
+  # loss
+  style_blend_weights: null
+  content_weight: 5e0
+  style_weight: 1e2
+  tv_weight: 0
+  # optimizer
+  num_iterations:
+    type: ListParamStrategy
+    values: [1500, 1000, 500, 200, 200]
+  optimizer: "lbfgs" # choices=['lbfgs', 'adam']
+  learning_rate: 1e0
+  lbfgs_num_correction: 100
+  style_scale: 1.0
+
+  # model
+  model_file: "models/vgg19-d01eb7cb.pth"
+  pooling: "max" # choices=['avg', 'max']
+  content_layers: 'relu4_2'
+  style_layers: 'relu1_1,relu2_1,relu3_1,relu4_1,relu5_1'
+  normalize_weights: False
+  normalize_gradients: False
+
+  ### Following parameters probably don't make sense to change between steps
+  ### and should be left constant
+  # input
+  original_colors: 0 # choices=[0, 1]
+  # runner
+  seed: -1
+  print_iter: 50
+  save_iter: 0
+  # model
+  disable_check: False
+  # backend
+  backend: "cudnn" # choices=['nn', 'cudnn', 'mkl', 'mkldnn', 'openmp', 'mkl,cudnn', 'cudnn,mkl']
+  cudnn_autotune: True
+  multidevice_strategy: '4,7,29'
+  gpu: 0
+
+
+# Removed
+# output_image: 'out.png' # not used, since we have a fixed output filename scheme
+# init: "random" # choices=['random', 'image'] # overwritten by multi scale algorithm
+
+hydra:
+  job:
+    chdir: True

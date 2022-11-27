@@ -1,0 +1,35 @@
+style_image: "examples/inputs/seated-nude.jpg"
+style_blend_weights: null
+content_image: "examples/inputs/tubingen.jpg"
+image_size: 512
+gpu: 0
+content_weight: 5e0
+style_weight: 1e2
+normalize_weights: False
+normalize_gradients: False
+tv_weight: 1e-3
+num_iterations: 1000
+init: "random" # choices=['random', 'image']
+init_image: null
+optimizer: "lbfgs" # choices=['lbfgs', 'adam']
+learning_rate: 1e0
+lbfgs_num_correction: 100
+
+
+print_iter: 50
+save_iter: 100
+output_image: 'out.png'
+
+
+style_scale: 1.0
+original_colors: 0 # choices=[0, 1]
+pooling: "max" # choices=['avg', 'max']
+model_file: "models/vgg19-d01eb7cb.pth"
+disable_check: False
+backend: "nn" # choices=['nn', 'cudnn', 'mkl', 'mkldnn', 'openmp', 'mkl,cudnn', 'cudnn,mkl']
+cudnn_autotune: True
+seed: -1
+
+content_layers: 'relu4_2'
+style_layers: 'relu1_1,relu2_1,relu3_1,relu4_1,relu5_1'
+multidevice_strategy: '4,7,29'
